@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MICHAEL JACKSON | 90s Raw Energy</title>
+    
+    <!-- 
+        === GUÍA DE ARCHIVOS PARA GITHUB (SIN CARPETAS) ===
+        
+        Para subir esto a GitHub y que funcione directo:
+        1. Renombra este archivo a: index.html
+        
+        2. Sube tus archivos con estos nombres exactos al mismo lugar (root):
+           - tabloid_junkie.mp3
+           - bg_intro.jpg        (Fondo inicial)
+           - mj_render.png       (Recorte 3D header)
+           - gallery_1.jpg       (Foto vertical 1)
+           - gallery_2.jpg       (Foto vertical 2)
+           - gallery_3.jpg       (Foto vertical 3)
+           - gallery_4.jpg       (Foto vertical 4)
+           - gallery_5.jpg       (Foto vertical 5)
+           - carousel_1.jpg ...  (Fotos del carrusel)
+           - profile.jpg         (Tu foto de perfil)
+           
+        3. En el código abajo, donde veas una URL larga (ej: https://...), 
+           bórrala y pon solo el nombre del archivo (ej: "bg_intro.jpg").
+    -->
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Anton (Impact style) and Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        :root {
+            --primary-red: #ff0000;
+            --off-white: #f0f0f0;
+            --black: #050505;
+        }
+
+        body {
+            background-color: var(--black);
+            color: var(--off-white);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            cursor: none; /* Hide default cursor */
+            height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Disable custom cursor on touch devices */
+        @media (hover: none) and (pointer: coarse) {
+            body { cursor: auto; }
+            .cursor-dot, .cursor-outline { display: none; }
+        }
+        
+        body.loaded {
+            height: auto;
+            overflow-y: auto;
+        }
+
+        /* --- STARS EFFECT --- */
+        .star {
+            position: fixed;
+            background: white;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1; /* Behind content but visible on bg */
+            opacity: 0;
+            box-shadow: 0 0 4px rgba(255, 255, 255, 0.8);
+            animation: floatUp linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) scale(0);
+                opacity: 0;
+            }
+            20% {
+                opacity: var(--star-opacity);
+                transform: translateY(80vh) scale(1);
+            }
+            80% {
+                opacity: var(--star-opacity);
+                transform: translateY(20vh) scale(1);
+            }
+            100% {
+                transform: translateY(-10vh) scale(0);
+                opacity: 0;
+            }
+        }
+
+        /* --- INTRO SCREEN STYLES --- */
+        #intro-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background-color: #000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: all 1s cubic-bezier(0.7, 0, 0.3, 1);
+            overflow: hidden;
+        }
+
+        .intro-wallpaper {
+            position: absolute;
+            inset: 0;
+            background-image: url("https://i.imgur.com/XSMXHg7.jpeg");
+            background-size: cover;
+            background-position: center;
+            z-index: -2;
+            animation: slowZoom 20s infinite alternate ease-in-out;
+            will-change: transform;
+        }
+
+        .intro-overlay-dark {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: -1;
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
+        }
+        
+        @keyframes slowZoom {
+            0% { transform: scale(1); filter: brightness(0.8); }
+            100% { transform: scale(1.15); filter: brightness(1); }
+        }
+
+        .intro-content {
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            transform: scale(1);
+            transition: transform 0.8s ease-in;
+            width: 100%;
+            padding: 0 20px;
+        }
+
+        #intro-screen.hidden-intro {
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(1.5);
+            filter: blur(10px);
+            -webkit-filter: blur(10px);
+        }
+
+        /* Custom Cursor */
+        .cursor-dot, .cursor-outline {
+            position: fixed;
+            top: 0; left: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 9999;
+            pointer-events: none;
+        }
+        .cursor-dot { width: 8px; height: 8px; background-color: var(--primary-red); }
+        .cursor-outline {
+            width: 40px; height: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
+        body.hovering .cursor-outline {
+            width: 60px; height: 60px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: var(--primary-red);
+        }
+
+        /* 90s Grain Effect */
+        .noise-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0.07;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* Typography & Selection */
+        .font-headline { font-family: 'Anton', sans-serif; text-transform: uppercase; line-height: 0.85; letter-spacing: -0.02em; }
+        ::selection { background-color: var(--primary-red); color: white; }
+
+        /* 3D Render */
+        .mj-render {
+            mask-image: linear-gradient(to top, transparent 0%, black 40%);
+            -webkit-mask-image: linear-gradient(to top, transparent 0%, black 40%);
+            filter: drop-shadow(0 0 20px rgba(255, 0, 0, 0.3));
+            transition: transform 0.3s ease-out;
+            will-change: transform;
+        }
+
+        /* Jagged Borders Style */
+        .jagged-box {
+            position: relative; z-index: 10; cursor: pointer; transition: transform 0.3s ease;
+        }
+        .jagged-bg {
+            position: absolute; inset: -6px; background-color: var(--primary-red);
+            z-index: -1; transform: rotate(-1deg);
+            clip-path: polygon(0% 0%, 100% 2%, 99% 100%, 1% 98%);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .jagged-box:hover .jagged-bg { transform: rotate(1deg) scale(1.03); background-color: #fff; }
+        .jagged-box img { filter: grayscale(100%) contrast(120%); transition: filter 0.3s ease; }
+        .jagged-box:hover img { filter: grayscale(0%) contrast(110%); }
+
+        /* Lightbox */
+        #lightbox {
+            opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+        }
+        #lightbox.active { opacity: 1; pointer-events: all; }
+        #lightbox img {
+            max-height: 90vh; max-width: 90vw;
+            box-shadow: 0 0 50px rgba(255, 0, 0, 0.5);
+            transform: scale(0.9); transition: transform 0.3s ease;
+        }
+        #lightbox.active img { transform: scale(1); }
+
+        /* 3D Carousel */
+        .carousel-section { overflow: visible; perspective: 1200px; padding-top: 50px; padding-bottom: 100px; }
+        .carousel-container {
+            position: relative; width: 100%; height: 500px;
+            margin: 0 auto; transform-style: preserve-3d;
+            display: flex; justify-content: center; align-items: center;
+        }
+        .carousel-spinner {
+            position: relative; width: 250px; height: 350px;
+            transform-style: preserve-3d; animation: spin 25s infinite linear;
+            transform-origin: center center;
+        }
+        .carousel-item {
+            position: absolute; width: 100%; height: 100%;
+            left: 0; top: 0; border: 4px solid var(--primary-red);
+            background: black; overflow: hidden; cursor: pointer;
+            backface-visibility: hidden; -webkit-backface-visibility: hidden;
+            box-shadow: 0 0 20px rgba(255,0,0,0.5);
+        }
+        .carousel-item img { width: 100%; height: 100%; object-fit: cover; opacity: 0.9; transition: opacity 0.3s; }
+        .carousel-item:hover img { opacity: 1; }
+        @keyframes spin { from { transform: rotateY(0deg); } to { transform: rotateY(360deg); } }
+
+        /* Glitch Effect */
+        .glitch-hover:hover { animation: glitch 0.3s cubic-bezier(.25, .46, .45, .94) both infinite; color: var(--primary-red); }
+        @keyframes glitch {
+            0% { transform: translate(0) } 20% { transform: translate(-2px, 2px) }
+            40% { transform: translate(-2px, -2px) } 60% { transform: translate(2px, 2px) }
+            80% { transform: translate(2px, -2px) } 100% { transform: translate(0) }
+        }
+
+        /* Visualizer */
+        .bar { width: 4px; background: var(--primary-red); animation: equalizer 1s infinite ease-in-out; }
+        @keyframes equalizer { 0%, 100% { height: 10px; } 50% { height: 24px; } }
+        .bar:nth-child(2) { animation-delay: 0.1s; } .bar:nth-child(3) { animation-delay: 0.2s; }
+        .bar:nth-child(4) { animation-delay: 0.3s; } .bar:nth-child(5) { animation-delay: 0.4s; }
+        .paused .bar { animation-play-state: paused; height: 5px; transition: height 0.3s;}
+    </style>
+</head>
+<body class="antialiased overflow-hidden">
+    
+    <!-- Custom Cursor -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <!-- Noise -->
+    <div class="noise-overlay"></div>
+
+    <!-- INTRO -->
+    <div id="intro-screen">
+        <div class="intro-wallpaper"></div>
+        <div class="intro-overlay-dark"></div>
+        
+        <div class="intro-content flex flex-col items-center">
+            <button id="enterBtn" class="group relative px-8 py-4 bg-transparent overflow-hidden hoverable mt-32 md:mt-0">
+                <span class="absolute inset-0 w-full h-full bg-red-600/20 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300 skew-x-12"></span>
+                <span class="absolute inset-0 w-full h-full border-2 border-white"></span>
+                <span class="relative font-headline text-3xl text-white tracking-widest uppercase group-hover:text-red-500 transition-colors">
+                    Ingresar
+                </span>
+            </button>
+            <p class="mt-4 font-mono text-sm md:text-base text-red-500 animate-pulse tracking-[0.3em] font-bold shadow-black drop-shadow-lg">
+                WARNING : LEGEND INSIDE
+            </p>
+        </div>
+    </div>
+
+    <!-- Lightbox -->
+    <div id="lightbox" class="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-4">
+        <button id="closeLightbox" class="absolute top-6 right-6 text-white hover:text-red-500 transition-colors cursor-pointer hoverable">
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+        <img src="" alt="Zoomed Image" class="border-4 border-white object-contain w-auto h-auto">
+    </div>
+
+    <!-- Nav -->
+    <nav class="fixed top-0 w-full z-40 px-6 py-6 flex justify-between md:justify-start items-center mix-blend-difference">
+        <div class="text-white font-headline text-2xl tracking-tighter">
+            HIStory<span class="text-red-600">.</span>
+        </div>
+    </nav>
+
+    <!-- Main -->
+    <main class="relative z-10 pt-20 pb-20">
+        
+        <!-- HERO -->
+        <section class="relative min-h-screen flex flex-col items-center justify-start overflow-visible">
+            <div class="relative z-10 text-center mt-10 md:mt-0 w-full px-4">
+                <div class="flex flex-col items-center justify-center relative">
+                    <h1 class="font-headline text-[15vw] leading-none text-white select-none">
+                        KING <span class="text-transparent" style="-webkit-text-stroke: 2px white;">OF</span>
+                    </h1>
+                    <div class="flex items-center justify-center w-full -mt-[2vw] relative">
+                        <h1 class="font-headline text-[15vw] leading-none text-white z-20 select-none">POP</h1>
+                        <svg class="absolute z-10 text-red-600 w-[18vw] h-[18vw] animate-pulse" viewBox="0 0 24 24" fill="currentColor" style="top: -20%; transform: rotate(15deg);">
+                            <path d="M12 0L14.59 9.41L24 12L14.59 14.59L12 24L9.41 14.59L0 12L9.41 9.41L12 0Z" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-3xl z-30 pointer-events-none">
+                <img src="https://i.pinimg.com/originals/b3/a9/c1/b3a9c15cf66eedd239cce8839d3ee107.png" 
+                     alt="Michael Jackson 3D Render" 
+                     class="mj-render w-full h-auto object-contain mx-auto"
+                     style="max-height: 80vh;">
+            </div>
+
+            <div class="absolute top-[35%] left-10 max-w-xs text-xs md:text-sm text-gray-400 font-mono hidden md:block">
+                <p class="mb-2">EST. 1958 - ∞</p>
+                <p>WE STRIVE TO SHARE THE MAGIC, THE MOVES, AND THE MESSAGE OF THE GREATEST ENTERTAINER OF ALL TIME.</p>
+            </div>
+            
+            <div class="absolute top-[35%] right-10 text-right text-xs md:text-sm text-gray-400 font-mono hidden md:block">
+                <p>BASED IN GARY, INDIANA</p>
+                <p class="text-red-600 font-bold mt-2">HIStory ERA / 1995</p>
+            </div>
+        </section>
+
+        <!-- PLAYER -->
+        <section class="w-full bg-red-600 py-4 border-y-4 border-white my-12 relative overflow-hidden group">
+            <div class="container mx-auto px-4 flex justify-between items-center relative z-10">
+                <div class="flex items-center gap-4">
+                    <button id="playBtn" class="bg-black text-white w-12 h-12 flex items-center justify-center rounded-full hover:scale-110 transition-transform border-2 border-white hoverable cursor-pointer">
+                        <i data-lucide="play" class="fill-current w-5 h-5 ml-1"></i>
+                    </button>
+                    <div class="flex flex-col">
+                        <span class="text-xs font-bold text-black uppercase tracking-wider">Now Playing</span>
+                        <div class="font-headline text-2xl text-white tracking-wide">TABLOID JUNKIE</div>
+                    </div>
+                </div>
+                <div id="visualizer" class="flex items-end gap-1 h-6 paused">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+                <div class="hidden md:block font-mono text-black text-xs font-bold">[ 04:32 ] STEREO</div>
+            </div>
+            <div class="absolute top-1/2 left-0 -translate-y-1/2 w-full whitespace-nowrap opacity-20 pointer-events-none text-[4rem] font-headline text-black leading-none">
+                TABLOID JUNKIE — SPECULATION — TABLOID JUNKIE — SPECULATION — TABLOID JUNKIE — SPECULATION
+            </div>
+        </section>
+
+        <!-- GALLERY: RAW ENERGY (5 Vertical Images - 9:16 Aspect) -->
+        <section class="container mx-auto px-4 py-20">
+            <!-- Grid Layout for 5 images -->
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 lg:gap-8 items-center justify-center">
+                
+                <!-- Image 1 -->
+                <div class="jagged-box w-full hover:z-20 hover:scale-105 transition-transform duration-300 zoomable hoverable transform rotate-[-2deg]">
+                    <div class="jagged-bg bg-red-600"></div>
+                    <div class="relative bg-black p-1 border-2 border-black">
+                        <!-- Vertical 9:16 Aspect Ratio -->
+                        <img src="https://i.pinimg.com/736x/8a/95/92/8a9592f72c4424376378f5d050672e3a.jpg" alt="MJ Selfie Style 1" class="w-full aspect-[9/16] object-cover block">
+                        <div class="absolute bottom-2 left-2 bg-white text-black px-1 font-headline text-lg transform -rotate-2">BAD</div>
+                    </div>
+                </div>
+
+                <!-- Image 2 -->
+                <div class="jagged-box w-full hover:z-20 hover:scale-105 transition-transform duration-300 zoomable hoverable transform rotate-[1deg] mt-8 lg:mt-12">
+                    <div class="jagged-bg bg-white"></div>
+                    <div class="relative bg-black p-1 border-2 border-black">
+                        <img src="https://i.pinimg.com/736x/1b/4f/98/1b4f986427a14e9f3b14732168937072.jpg" alt="MJ Selfie Style 2" class="w-full aspect-[9/16] object-cover block">
+                        <div class="absolute top-2 right-2 bg-red-600 text-white px-1 font-headline text-lg transform rotate-2">WILD</div>
+                    </div>
+                </div>
+
+                <!-- Image 3 -->
+                <div class="jagged-box w-full hover:z-20 hover:scale-105 transition-transform duration-300 zoomable hoverable transform rotate-[-1deg]">
+                    <div class="jagged-bg bg-red-600"></div>
+                    <div class="relative bg-black p-1 border-2 border-black">
+                        <img src="https://i.pinimg.com/736x/b2/e3/9e/b2e39e1554622b7a0f67139580628373.jpg" alt="MJ Selfie Style 3" class="w-full aspect-[9/16] object-cover block">
+                        <div class="absolute bottom-2 right-2 bg-white text-black px-1 font-headline text-lg transform -rotate-1">ICON</div>
+                    </div>
+                </div>
+
+                <!-- Image 4 -->
+                <div class="jagged-box w-full hover:z-20 hover:scale-105 transition-transform duration-300 zoomable hoverable transform rotate-[2deg] mt-8 lg:mt-12">
+                    <div class="jagged-bg bg-white"></div>
+                    <div class="relative bg-black p-1 border-2 border-black">
+                        <img src="https://i.pinimg.com/736x/d8/73/4f/d8734f2d590426768393e8784144369e.jpg" alt="MJ Selfie Style 4" class="w-full aspect-[9/16] object-cover block">
+                        <div class="absolute top-2 left-2 bg-red-600 text-white px-1 font-headline text-lg transform rotate-1">TOUR</div>
+                    </div>
+                </div>
+
+                <!-- Image 5 -->
+                <div class="jagged-box w-full hover:z-20 hover:scale-105 transition-transform duration-300 zoomable hoverable transform rotate-[-2deg]">
+                    <div class="jagged-bg bg-red-600"></div>
+                    <div class="relative bg-black p-1 border-2 border-black">
+                        <img src="https://i.pinimg.com/736x/e4/f9/55/e4f9554a935400938363738870129201.jpg" alt="MJ Selfie Style 5" class="w-full aspect-[9/16] object-cover block">
+                        <div class="absolute bottom-2 left-2 bg-white text-black px-1 font-headline text-lg transform -rotate-2">KING</div>
+                    </div>
+                </div>
+
+            </div>
+            
+            <div class="text-center mt-16 max-w-2xl mx-auto">
+                <p class="font-mono text-sm md:text-base leading-relaxed">
+                    "Just because it's in print doesn't mean it's the gospel." <br>
+                    <span class="text-red-600 font-bold">— Michael Jackson</span>
+                </p>
+            </div>
+        </section>
+
+        <!-- CAROUSEL -->
+        <section class="carousel-section py-24 border-t border-gray-900">
+            <h2 class="text-center font-headline text-4xl md:text-6xl mb-24 text-white tracking-widest glitch-hover cursor-pointer hoverable">
+                THE <span class="text-red-600">LEGACY</span>
+            </h2>
+
+            <div class="carousel-container hoverable">
+                <div class="carousel-spinner" id="carousel">
+                    <!-- Carousel items generated by JS -->
+                    <div class="carousel-item shadow-[0_0_30px_rgba(255,0,0,0.5)]">
+                        <img src="https://m.media-amazon.com/images/M/MV5BMjExMjIyNTI5NF5BMl5BanBnXkFtZTcwODIxNTM2OQ@@._V1_.jpg" alt="MJ 1">
+                    </div>
+                    <div class="carousel-item shadow-[0_0_30px_rgba(255,0,0,0.5)]">
+                        <img src="https://i.pinimg.com/originals/ce/0c/36/ce0c36b4431289196b0255a591289b4d.jpg" alt="MJ 2">
+                    </div>
+                    <div class="carousel-item shadow-[0_0_30px_rgba(255,0,0,0.5)]">
+                        <img src="https://upload.wikimedia.org/wikipedia/en/2/25/Michael_Jackson_-_Thriller_25.jpg" alt="MJ 3">
+                    </div>
+                    <div class="carousel-item shadow-[0_0_30px_rgba(255,0,0,0.5)]">
+                        <img src="https://upload.wikimedia.org/wikipedia/en/0/01/Michael_Jackson_-_Bad.png" alt="MJ 4">
+                    </div>
+                    <div class="carousel-item shadow-[0_0_30px_rgba(255,0,0,0.5)]">
+                        <img src="https://upload.wikimedia.org/wikipedia/en/b/bf/Michael_Jackson_-_Dangerous.png" alt="MJ 5">
+                    </div>
+                    <div class="carousel-item shadow-[0_0_30px_rgba(255,0,0,0.5)]">
+                        <img src="https://upload.wikimedia.org/wikipedia/en/6/6f/Michael_Jackson_-_HIStory_Past%2C_Present_and_Future%2C_Book_I.png" alt="MJ 6">
+                    </div>
+                </div>
+            </div>
+            <div class="w-full text-center mt-24">
+                <span class="font-mono text-xs text-red-600 animate-pulse">SPINNING ETERNALLY</span>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="bg-neutral-900 border-t border-red-900 text-white py-12 px-6">
+            <div class="container mx-auto flex flex-col items-center text-center md:text-left md:items-start md:flex-row justify-between gap-8">
+                <!-- Profile -->
+                <div class="flex items-center gap-4 group">
+                    <div class="relative hoverable">
+                        <img src="https://i.pinimg.com/originals/c7/2b/96/c72b9637c35e8966779435b546300483.jpg" alt="Profile" class="w-16 h-16 rounded-full border-2 border-white object-cover group-hover:border-red-600 transition-colors">
+                        <span class="absolute bottom-0 right-0 w-4 h-4 bg-green-500 border-2 border-black rounded-full animate-pulse"></span>
+                    </div>
+                    <div class="font-mono">
+                        <div class="text-xs text-green-400 font-bold mb-1 tracking-widest uppercase">En Línea</div>
+                        <div class="flex items-center gap-2 text-sm font-bold">
+                            <span>iGaLLe</span>
+                            <span class="text-gray-500 font-normal">(1554533661)</span>
+                            <img src="https://flagcdn.com/w20/mx.png" srcset="https://flagcdn.com/w40/mx.png 2x" width="20" alt="Mexico">
+                        </div>
+                        <div class="text-[10px] text-gray-400 mt-1">MJ FAN / DEVELOPER</div>
+                    </div>
+                </div>
+                <!-- Signature -->
+                <div class="text-center md:text-right flex flex-col justify-center h-full mt-2">
+                     <p class="font-headline text-2xl tracking-wide mb-1">NEVERLAND <span class="text-red-600">ARCHIVES</span></p>
+                    <p class="font-mono text-[10px] text-gray-500 tracking-widest">©2026 Eam96 Xatspace Design</p>
+                </div>
+            </div>
+        </footer>
+
+    </main>
+
+    <!-- AUDIO (Replace src with your local file, e.g., "tabloid_junkie.mp3") -->
+    <audio id="audioPlayer" loop>
+        <source src="https://archive.org/download/MichaelJacksonTabloidJunkie/09%20Tabloid%20Junkie.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <script>
+        lucide.createIcons();
+
+        // --- STARS GENERATOR ---
+        const createStars = () => {
+            const count = window.innerWidth < 768 ? 30 : 60; // Less stars on mobile
+            for (let i = 0; i < count; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                
+                // Random positioning
+                const x = Math.random() * 100;
+                const size = Math.random() * 2 + 1; // 1px to 3px
+                const duration = Math.random() * 5 + 5; // 5s to 10s float duration
+                const delay = Math.random() * 5;
+                const opacity = Math.random() * 0.6 + 0.4;
+                
+                star.style.left = `${x}vw`;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.animationDuration = `${duration}s`;
+                star.style.animationDelay = `-${delay}s`; // Negative delay starts animation mid-way
+                star.style.setProperty('--star-opacity', opacity);
+                
+                document.body.appendChild(star);
+            }
+        };
+        createStars();
+
+        // Intro
+        const enterBtn = document.getElementById('enterBtn');
+        const introScreen = document.getElementById('intro-screen');
+        enterBtn.addEventListener('click', () => {
+            introScreen.classList.add('hidden-intro');
+            document.body.classList.add('loaded');
+            
+            // AUTO PLAY LOGIC
+            const audio = document.getElementById('audioPlayer');
+            const visualizer = document.getElementById('visualizer');
+            const playBtn = document.getElementById('playBtn');
+            
+            audio.play().then(() => {
+                isPlaying = true;
+                visualizer.classList.remove('paused');
+                playBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pause w-5 h-5"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>`;
+            }).catch(e => console.log("Autoplay blocked:", e));
+        });
+
+        // Custom Cursor Logic
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorOutline = document.querySelector('.cursor-outline');
+        
+        // Only activate cursor logic if device supports hover (desktop)
+        if (window.matchMedia("(hover: hover)").matches) {
+            window.addEventListener('mousemove', (e) => {
+                const posX = e.clientX;
+                const posY = e.clientY;
+                cursorDot.style.left = `${posX}px`;
+                cursorDot.style.top = `${posY}px`;
+                cursorOutline.animate({
+                    left: `${posX}px`,
+                    top: `${posY}px`
+                }, { duration: 500, fill: "forwards" });
+            });
+        }
+
+        document.querySelectorAll('a, button, .hoverable, .carousel-item').forEach(el => {
+            el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
+            el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
+        });
+
+        // Lightbox
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = lightbox.querySelector('img');
+        const closeLightbox = document.getElementById('closeLightbox');
+        const zoomableImages = document.querySelectorAll('.zoomable');
+
+        zoomableImages.forEach(container => {
+            container.addEventListener('click', () => {
+                const img = container.querySelector('img');
+                if (img) {
+                    lightboxImg.src = img.src;
+                    lightbox.classList.add('active');
+                    document.body.classList.remove('hovering');
+                }
+            });
+        });
+        const hideLightbox = () => lightbox.classList.remove('active');
+        closeLightbox.addEventListener('click', hideLightbox);
+        lightbox.addEventListener('click', (e) => {
+            if (e.target !== lightboxImg) hideLightbox();
+        });
+
+        // Carousel 3D
+        const items = document.querySelectorAll('.carousel-item');
+        const itemCount = items.length;
+        const angle = 360 / itemCount;
+        const radius = Math.round((250 / 2) / Math.tan(Math.PI / itemCount)); 
+
+        items.forEach((item, index) => {
+            const randomTilt = (Math.random() - 0.5) * 5; 
+            item.style.transform = `rotateY(${index * angle}deg) translateZ(${radius + 250}px) rotateZ(${randomTilt}deg)`;
+            item.addEventListener('click', () => {
+                const img = item.querySelector('img');
+                lightboxImg.src = img.src;
+                lightbox.classList.add('active');
+            });
+        });
+
+        // Audio
+        const playBtn = document.getElementById('playBtn');
+        const audio = document.getElementById('audioPlayer');
+        const visualizer = document.getElementById('visualizer');
+        let isPlaying = false;
+
+        playBtn.addEventListener('click', () => {
+            if (isPlaying) {
+                audio.pause();
+                visualizer.classList.add('paused');
+                playBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-play w-5 h-5 ml-1"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>`;
+            } else {
+                audio.play();
+                visualizer.classList.remove('paused');
+                playBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pause w-5 h-5"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>`;
+            }
+            isPlaying = !isPlaying;
+        });
+
+        // Parallax (Only on non-touch devices for better performance)
+        if (window.matchMedia("(hover: hover)").matches) {
+            document.addEventListener('mousemove', (e) => {
+                if (!introScreen.classList.contains('hidden-intro')) return;
+                const mjRender = document.querySelector('.mj-render');
+                const x = (window.innerWidth - e.pageX * 2) / 100;
+                const y = (window.innerHeight - e.pageY * 2) / 100;
+                if(mjRender) mjRender.style.transform = `translateX(${x}px) translateY(${y}px)`;
+            });
+        }
+    </script>
+</body>
+</html>
