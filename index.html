@@ -5,28 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>MICHAEL JACKSON | 90s Raw Energy</title>
     
-    <!-- 
-        === GUÍA DE ARCHIVOS PARA GITHUB (SIN CARPETAS) ===
-        
-        Para subir esto a GitHub y que funcione directo:
-        1. Renombra este archivo a: index.html
-        
-        2. Sube tus archivos con estos nombres exactos al mismo lugar (root):
-           - tabloid_junkie.mp3
-           - bg_intro.jpg        (Fondo inicial)
-           - mj_render.png       (Recorte 3D header)
-           - gallery_1.jpg       (Foto vertical 1)
-           - gallery_2.jpg       (Foto vertical 2)
-           - gallery_3.jpg       (Foto vertical 3)
-           - gallery_4.jpg       (Foto vertical 4)
-           - gallery_5.jpg       (Foto vertical 5)
-           - carousel_1.jpg ...  (Fotos del carrusel)
-           - profile.jpg         (Tu foto de perfil)
-           
-        3. En el código abajo, donde veas una URL larga (ej: https://...), 
-           bórrala y pon solo el nombre del archivo (ej: "bg_intro.jpg").
-    -->
-    
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -115,7 +93,8 @@
         .intro-wallpaper {
             position: absolute;
             inset: 0;
-            background-image: url("https://i.imgur.com/XSMXHg7.jpeg");
+            /* CAMBIO: Ruta local */
+            background-image: url("bg_intro.jpg");
             background-size: cover;
             background-position: center;
             z-index: -2;
@@ -329,7 +308,8 @@
             </div>
 
             <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-3xl z-30 pointer-events-none">
-                <img src="https://i.pinimg.com/originals/b3/a9/c1/b3a9c15cf66eedd239cce8839d3ee107.png" 
+                <!-- CAMBIO: Ruta local -->
+                <img src="mj_render.png" 
                      alt="Michael Jackson 3D Render" 
                      class="mj-render w-full h-auto object-contain mx-auto"
                      style="max-height: 80vh;">
@@ -381,8 +361,8 @@
                 <div class="jagged-box w-full hover:z-20 hover:scale-105 transition-transform duration-300 zoomable hoverable transform rotate-[-2deg]">
                     <div class="jagged-bg bg-red-600"></div>
                     <div class="relative bg-black p-1 border-2 border-black">
-                        <!-- Vertical 9:16 Aspect Ratio -->
-                        <img src="https://i.pinimg.com/736x/8a/95/92/8a9592f72c4424376378f5d050672e3a.jpg" alt="MJ Selfie Style 1" class="w-full aspect-[9/16] object-cover block">
+                        <!-- CAMBIO: Ruta local -->
+                        <img src="gallery_1.jpg" alt="MJ Selfie Style 1" class="w-full aspect-[9/16] object-cover block">
                         <div class="absolute bottom-2 left-2 bg-white text-black px-1 font-headline text-lg transform -rotate-2">BAD</div>
                     </div>
                 </div>
@@ -391,7 +371,8 @@
                 <div class="jagged-box w-full hover:z-20 hover:scale-105 transition-transform duration-300 zoomable hoverable transform rotate-[1deg] mt-8 lg:mt-12">
                     <div class="jagged-bg bg-white"></div>
                     <div class="relative bg-black p-1 border-2 border-black">
-                        <img src="https://i.pinimg.com/736x/1b/4f/98/1b4f986427a14e9f3b14732168937072.jpg" alt="MJ Selfie Style 2" class="w-full aspect-[9/16] object-cover block">
+                        <!-- CAMBIO: Ruta local -->
+                        <img src="gallery_2.jpg" alt="MJ Selfie Style 2" class="w-full aspect-[9/16] object-cover block">
                         <div class="absolute top-2 right-2 bg-red-600 text-white px-1 font-headline text-lg transform rotate-2">WILD</div>
                     </div>
                 </div>
@@ -400,7 +381,8 @@
                 <div class="jagged-box w-full hover:z-20 hover:scale-105 transition-transform duration-300 zoomable hoverable transform rotate-[-1deg]">
                     <div class="jagged-bg bg-red-600"></div>
                     <div class="relative bg-black p-1 border-2 border-black">
-                        <img src="https://i.pinimg.com/736x/b2/e3/9e/b2e39e1554622b7a0f67139580628373.jpg" alt="MJ Selfie Style 3" class="w-full aspect-[9/16] object-cover block">
+                        <!-- CAMBIO: Ruta local -->
+                        <img src="gallery_3.jpg" alt="MJ Selfie Style 3" class="w-full aspect-[9/16] object-cover block">
                         <div class="absolute bottom-2 right-2 bg-white text-black px-1 font-headline text-lg transform -rotate-1">ICON</div>
                     </div>
                 </div>
@@ -409,7 +391,8 @@
                 <div class="jagged-box w-full hover:z-20 hover:scale-105 transition-transform duration-300 zoomable hoverable transform rotate-[2deg] mt-8 lg:mt-12">
                     <div class="jagged-bg bg-white"></div>
                     <div class="relative bg-black p-1 border-2 border-black">
-                        <img src="https://i.pinimg.com/736x/d8/73/4f/d8734f2d590426768393e8784144369e.jpg" alt="MJ Selfie Style 4" class="w-full aspect-[9/16] object-cover block">
+                        <!-- CAMBIO: Ruta local -->
+                        <img src="gallery_4.jpg" alt="MJ Selfie Style 4" class="w-full aspect-[9/16] object-cover block">
                         <div class="absolute top-2 left-2 bg-red-600 text-white px-1 font-headline text-lg transform rotate-1">TOUR</div>
                     </div>
                 </div>
@@ -418,7 +401,8 @@
                 <div class="jagged-box w-full hover:z-20 hover:scale-105 transition-transform duration-300 zoomable hoverable transform rotate-[-2deg]">
                     <div class="jagged-bg bg-red-600"></div>
                     <div class="relative bg-black p-1 border-2 border-black">
-                        <img src="https://i.pinimg.com/736x/e4/f9/55/e4f9554a935400938363738870129201.jpg" alt="MJ Selfie Style 5" class="w-full aspect-[9/16] object-cover block">
+                        <!-- CAMBIO: Ruta local -->
+                        <img src="gallery_5.jpg" alt="MJ Selfie Style 5" class="w-full aspect-[9/16] object-cover block">
                         <div class="absolute bottom-2 left-2 bg-white text-black px-1 font-headline text-lg transform -rotate-2">KING</div>
                     </div>
                 </div>
@@ -443,22 +427,28 @@
                 <div class="carousel-spinner" id="carousel">
                     <!-- Carousel items generated by JS -->
                     <div class="carousel-item shadow-[0_0_30px_rgba(255,0,0,0.5)]">
-                        <img src="https://m.media-amazon.com/images/M/MV5BMjExMjIyNTI5NF5BMl5BanBnXkFtZTcwODIxNTM2OQ@@._V1_.jpg" alt="MJ 1">
+                        <!-- CAMBIO: Ruta local -->
+                        <img src="carousel_1.jpg" alt="MJ 1">
                     </div>
                     <div class="carousel-item shadow-[0_0_30px_rgba(255,0,0,0.5)]">
-                        <img src="https://i.pinimg.com/originals/ce/0c/36/ce0c36b4431289196b0255a591289b4d.jpg" alt="MJ 2">
+                        <!-- CAMBIO: Ruta local -->
+                        <img src="carousel_2.jpg" alt="MJ 2">
                     </div>
                     <div class="carousel-item shadow-[0_0_30px_rgba(255,0,0,0.5)]">
-                        <img src="https://upload.wikimedia.org/wikipedia/en/2/25/Michael_Jackson_-_Thriller_25.jpg" alt="MJ 3">
+                        <!-- CAMBIO: Ruta local -->
+                        <img src="carousel_3.jpg" alt="MJ 3">
                     </div>
                     <div class="carousel-item shadow-[0_0_30px_rgba(255,0,0,0.5)]">
-                        <img src="https://upload.wikimedia.org/wikipedia/en/0/01/Michael_Jackson_-_Bad.png" alt="MJ 4">
+                        <!-- CAMBIO: Ruta local -->
+                        <img src="carousel_4.jpg" alt="MJ 4">
                     </div>
                     <div class="carousel-item shadow-[0_0_30px_rgba(255,0,0,0.5)]">
-                        <img src="https://upload.wikimedia.org/wikipedia/en/b/bf/Michael_Jackson_-_Dangerous.png" alt="MJ 5">
+                        <!-- CAMBIO: Ruta local -->
+                        <img src="carousel_5.jpg" alt="MJ 5">
                     </div>
                     <div class="carousel-item shadow-[0_0_30px_rgba(255,0,0,0.5)]">
-                        <img src="https://upload.wikimedia.org/wikipedia/en/6/6f/Michael_Jackson_-_HIStory_Past%2C_Present_and_Future%2C_Book_I.png" alt="MJ 6">
+                        <!-- CAMBIO: Ruta local -->
+                        <img src="carousel_6.jpg" alt="MJ 6">
                     </div>
                 </div>
             </div>
@@ -473,7 +463,8 @@
                 <!-- Profile -->
                 <div class="flex items-center gap-4 group">
                     <div class="relative hoverable">
-                        <img src="https://i.pinimg.com/originals/c7/2b/96/c72b9637c35e8966779435b546300483.jpg" alt="Profile" class="w-16 h-16 rounded-full border-2 border-white object-cover group-hover:border-red-600 transition-colors">
+                        <!-- CAMBIO: Ruta local -->
+                        <img src="profile.jpg" alt="Profile" class="w-16 h-16 rounded-full border-2 border-white object-cover group-hover:border-red-600 transition-colors">
                         <span class="absolute bottom-0 right-0 w-4 h-4 bg-green-500 border-2 border-black rounded-full animate-pulse"></span>
                     </div>
                     <div class="font-mono">
@@ -496,9 +487,10 @@
 
     </main>
 
-    <!-- AUDIO (Replace src with your local file, e.g., "tabloid_junkie.mp3") -->
+    <!-- AUDIO (Replace src with your local file) -->
     <audio id="audioPlayer" loop>
-        <source src="https://archive.org/download/MichaelJacksonTabloidJunkie/09%20Tabloid%20Junkie.mp3" type="audio/mpeg">
+        <!-- CAMBIO: Ruta local -->
+        <source src="tabloid_junkie.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
 
